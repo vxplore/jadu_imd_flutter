@@ -1,30 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:jadu_imd/di.dart';
 import 'package:jadu_imd/navigation_service.dart';
+import 'package:mobx/mobx.dart';
 import '../app_settings.dart';
 import '../constants.dart';
 import '../routes.dart';
 
-class SplashProvider with ChangeNotifier{
-  var splash_done = false;
-  var app_settings = instance<AppSettings>();
+// Include generated file
+part 'splash_provider.g.dart';
 
-  SplashProvider(){
-    initializeSplash();
-  }
+// This is the class used by rest of your codebase
+class SplashViewModel = _SplashViewModel with _$SplashViewModel;
 
-  void initializeSplash() async {
-    if(splash_done){
-      return;
-    }
-    splash_done = true;
-    await Future.delayed(const Duration(seconds: Constants.splash_duration));
-    var user_id = app_settings.userId;
-    if(user_id==null || user_id==""){
-      instance<NavigationService>().navigateTo(Routes.login);
+// The store-class
+abstract class _SplashViewModel with Store {
+  AppSettings appSettings = instance<AppSettings>();
+  NavigationService navigationService = instance<NavigationService>();
+  @action
+  onInit(){
+    var userId = appSettings.userId;
+    if(userId==null||userId==""){
+      gotoLogin();
     }
     else{
-      instance<NavigationService>().navigateTo(Routes.home);
+      gotoHome();
     }
+  }
+
+  void gotoLogin() async {
+    await Future.delayed(Duration(seconds: 3));
+    navigationService.navigateTo(Routes.login);
+  }
+
+  void gotoHome() async {
+    await Future.delayed(Duration(seconds: 3));
+    navigationService.navigateTo(Routes.home);
   }
 }

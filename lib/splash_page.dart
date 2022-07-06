@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:jadu_imd/providers/splash_provider.dart';
 import 'package:jadu_imd/widgets.dart';
-import 'package:provider/provider.dart';
 
-class SplashPage extends StatelessWidget {
+final vm = SplashViewModel();
+
+class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+
+
+
   @override
   Widget build(BuildContext context) {
-    final splashViewModel = Provider.of<SplashProvider>(context);
     return Scaffold(
       body: Center(
         child: Wrap(
@@ -25,6 +34,12 @@ class SplashPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    vm.onInit();
   }
 }
 
